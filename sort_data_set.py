@@ -54,16 +54,19 @@ for im in glob.glob(data_dir + '/*.jpg'):
     )
     if len(faces) > 0:
         c_pos += 1
-        print "Found {0} faces!".format(len(faces))
+        # print "Found {0} faces!".format(len(faces))
         for (x, y, w, h) in faces:
             cv2.rectangle(gray, (x, y), (x + w, y + h), (0, 255, 0), 2)
         cv2.imshow("Faces found", gray)
         cv2.waitKey(1)
-        cv2.imwrite(pos_dir + "/" + c_pos + ".jpg", image)
+        pos_path = pos_dir + "/" + str(c_pos) + ".jpg"
+        print "Writing positive example %s" % pos_path
+        cv2.imwrite(pos_path, image)
     else:
         c_neg += 1
-        print "Writing negative example %s" % im
-        cv2.imwrite(neg_dir + "/" + c_neg + ".jpg", image)
+        neg_path = neg_dir + "/" + str(c_neg) + ".jpg"
+        print "Writing negative example %s" % neg_path
+        cv2.imwrite(neg_path, image)
     # save some space on disk
     os.remove(im)
 
