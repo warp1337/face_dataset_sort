@@ -1,3 +1,4 @@
+import os
 import cv2
 import sys
 import glob
@@ -11,19 +12,35 @@ pos_dir = sys.argv[3]
 # negative examples
 neg_dir = sys.argv[4]
 # obviously the cascade file
-faceCascade = cv2.CascadeClassifier(c_path)
+f_cas = cv2.CascadeClassifier(c_path)
 
 # counter
 c_pos = 0
 c_neg = 0
 c_all = 0
+
+paths = [data_dir, pos_dir, neg_dir]
+
+for item in paths:
+    if os.path.exists(c_path):
+        pass
+    else:
+        print("Path does not exist %s" % c_path)
+        sys.exit(1)
+
+if os.path.isfile(f_cas):
+    pass
+else:
+    print("File does not exist %s" % f_cas)
+    sys.exit(1)
+
 for im in glob.glob(data_dir + '/*.jpg'):
     c_all += 1
     # print("Found: %s" % im)
     image = cv2.imread(im)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     # detect faces in the image
-    faces = faceCascade.detectMultiScale(
+    faces = f_cas.detectMultiScale(
         gray,
         scaleFactor=1.1,
         minNeighbors=5,
@@ -41,5 +58,7 @@ for im in glob.glob(data_dir + '/*.jpg'):
         print("Writing negative example %s" % im)
         cv2.imwrite(neg_dir + "/" + im, gray)
         c_neg += 1
+    # save some space on disk
+    os.remove(im)
 
 print("Processed %d images | positive %d | negative %d" % (c_all, c_pos, c_neg))
