@@ -25,13 +25,13 @@ for item in paths:
     if os.path.exists(c_path):
         pass
     else:
-        print("Path does not exist %s" % c_path)
+        print "Path does not exist %s" % c_path
         sys.exit(1)
 
-if os.path.isfile(f_cas):
+if os.path.isfile(c_path):
     pass
 else:
-    print("File does not exist %s" % f_cas)
+    print "File does not exist %s" % c_path
     sys.exit(1)
 
 for im in glob.glob(data_dir + '/*.jpg'):
@@ -47,7 +47,7 @@ for im in glob.glob(data_dir + '/*.jpg'):
         minSize=(30, 30)
     )
     if len(faces) > 0:
-        print("Found {0} faces!".format(len(faces)))
+        print "Found {0} faces!".format(len(faces))
         for (x, y, w, h) in faces:
             cv2.rectangle(gray, (x, y), (x + w, y + h), (0, 255, 0), 2)
         cv2.imshow("Faces found", gray)
@@ -55,10 +55,10 @@ for im in glob.glob(data_dir + '/*.jpg'):
         cv2.imwrite(pos_dir + "/" + im, gray)
         c_pos += 1
     else:
-        print("Writing negative example %s" % im)
+        print "Writing negative example %s" % im
         cv2.imwrite(neg_dir + "/" + im, gray)
         c_neg += 1
     # save some space on disk
     os.remove(im)
 
-print("Processed %d images | positive %d | negative %d" % (c_all, c_pos, c_neg))
+print "Processed %d images | positive %d | negative %d" % (c_all, c_pos, c_neg)
